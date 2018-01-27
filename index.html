@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Cancer Idle</title>
+	<style>
+	* { padding: 0; margin: 0; }
+	canvas { background: #eee; display: block; margin: 0; }
+	td, th { padding: 5px; }
+	.game {
+		padding-left: 0 !important;
+	}
+</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script src="https://coinhive.com/lib/coinhive.min.js"></script>
+<script type="text/javascript"></script>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-9 game" id="gamePanel">
+				<canvas id="game"></canvas>
+				<script src="game.js"></script>
+			</div>
+			<div class="col-3" id="upgradePanel">
+				<table>
+					<tr>
+						<th>
+							Upgrade
+						</th>
+						<th>
+							Level
+						</th>
+						<th>
+							Price
+						</th>
+						<th></th>
+					</tr>
+					<tr>
+						<td>
+							Player Speed
+						</td>
+						<td id="playerSpeedLevel">
+							1
+						</td>
+						<td id="playerSpeedPrice">
+							1
+						</td>
+						<td>
+							<button class="btn btn-primary" id="playerSpeedButton">Buy</button class="btn btn-primary">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Roaming Cell Speed
+						</td>
+						<td id="roamingSpeedLevel">
+							1
+						</td>
+						<td id="roamingSpeedPrice">
+							1
+						</td>
+						<td>
+							<button class="btn btn-primary" id="roamingSpeedButton">Buy</button class="btn btn-primary">
+							</td>
+					</tr>
+					<tr>
+						<td>
+							Blood Cell Spawn Rate
+						</td>
+						<td id="spawnRateLevel">
+							1
+						</td>
+						<td id="spawnRatePrice">
+							1
+						</td>
+						<td>
+							<button class="btn btn-primary" id="spawnRateButton">Buy</button class="btn btn-primary">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Blood Cell Value
+						</td>
+						<td id="bloodCellValueLevel">
+							1
+						</td>
+						<td id="bloodCellValuePrice">
+							1
+						</td>
+						<td>
+							<button class="btn btn-primary" id="bloodCellValueButton">Buy</button class="btn btn-primary">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Blood Cell Count
+						</td>
+						<td id="bloodCellCountLevel">
+							1
+						</td>
+						<td id="bloodCellCountPrice">
+							1
+						</td>
+						<td>
+							<button class="btn btn-primary" id="bloodCellCountButton">Buy</button class="btn btn-primary">
+						</td>
+					</tr>
+				</table>
+
+									<p id="money">Money : 0</p><button class="btn btn-primary" id="addMoney">Add Money</button>
+
+									<button class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Buy Cells</button>
+
+									<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+										<div class="modal-dialog modal-lg">
+											<div class="modal-content">
+												<table>
+													<tr>
+														<td>
+															<button class="btn cell-btn" value="1"><img src="assets/Minuscule Healthy Cell.png" height="50" width="50"></img></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="2"><img src="assets/Tiny Healthy Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="3"><img src="assets/Small Healthy Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="4"><img src="assets/Medium Healthy Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="5"><img src="assets/Big Healthy Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="6"><img src="assets/Huge Healthy Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="7"><img src="assets/Gigantic Healthy Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="8"><img src="assets/Colossal Healthy Cell.png" height="50" width="50"></button>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<button class="btn cell-btn" value="9"><img src="assets/Minuscule Sick Cell.png" height="50" width="50"></img></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="10"><img src="assets/Tiny Sick Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="11"><img src="assets/Small Sick Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="12"><img src="assets/Medium Sick Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="13"><img src="assets/Big Sick Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="14"><img src="assets/Huge Sick Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="15"><img src="assets/Gigantic Sick Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="16"><img src="assets/Colossal Sick Cell.png" height="50" width="50"></button>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<button class="btn cell-btn" value="17"><img src="assets/Minuscule Degenerate Cell.png" height="50" width="50"></img></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="18"><img src="assets/Tiny Degenerate Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="19"><img src="assets/Small Degenerate Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="20"><img src="assets/Medium Degenerate Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="21"><img src="assets/Big Degenerate Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="22"><img src="assets/Huge Degenerate Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="23"><img src="assets/Gigantic Degenerate Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="24"><img src="assets/Colossal Degenerate Cell.png" height="50" width="50"></button>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<button class="btn cell-btn" value="25"><img src="assets/Minuscule Cancer Cell.png" height="50" width="50"></img></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="26"><img src="assets/Tiny Cancer Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="27"><img src="assets/Small Cancer Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="28"><img src="assets/Medium Cancer Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="29"><img src="assets/Big Cancer Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="30"><img src="assets/Huge Cancer Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="31"><img src="assets/Gigantic Cancer Cell.png" height="50" width="50"></button>
+														</td>
+														<td>
+															<button class="btn cell-btn" value="32"><img src="assets/Colossal Cancer Cell.png" height="50" width="50"></button>
+														</td>
+													</tr>
+												</table>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</body>
