@@ -260,12 +260,15 @@
 				var evolveCells = [];
 
 				if (!evolving) {
-					for (var i = 0; i < cancerCells.length && evolveCells.length < 10; i++) {
-						if (getCellName(cancerCellsUnlocked) === cancerCells[i].name) {
-							evolveCells.push(cancerCells[i]);
-							cancerCells[i].evolving = true;
+					if (cancerCells.filter(function (cell) { return cell.evolving; }).length < 10) {
+						for (var i = 0; i < cancerCells.length && evolveCells.length <= 10; i ++) {
+							if (getCellName(cancerCellsUnlocked) === cancerCells[i].name) {
+								evolveCells.push(cancerCells[i]);
+								cancerCells[i].evolving = true;
+							}
 						}
 					}
+
 					if (evolveCells.length === 10) {
 						enableEvolveButton();
 						evolvingCells = evolveCells;
@@ -279,6 +282,7 @@
 						deleteCancerCell(i);
 					}
 				}
+			}
 
 			function flash () {
 				ctx.beginPath ();
@@ -419,17 +423,6 @@
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				canEvolve();
 
-				if (evolving) {
-					if (evolvingFrameCount < evolvingFrameTime)
-						evolvingFrameCount++;
-					else {
-						evolving = false;
-						finishedEvolve ();
-						evolvingFrameCount = 0;
-					}
-				}
-				var evolveCells = canEvolve();
-
 				if (bloodCells.length === 0) {
 					addBloodCell("red");
 				}
@@ -536,6 +529,7 @@
 						evolvingFrameCount++;
 					} 
 					else if (evolvingFrameCount < evolvingFlashFrameTime){
+						finishedEvolve();
 						flash ();
 						evolvingFrameCount++;
 					}
