@@ -1,12 +1,6 @@
 import os
 import math
 
-cellType = {
-	0: "Healthy",
-	1: "Sick",
-	2: "Degenerate",
-	3: "Cancer"
-}
 
 cellSize = {
 	0: "Minuscule",
@@ -20,6 +14,6 @@ cellSize = {
 }
 
 for filename in os.listdir("."):
-	if filename.startswith("CancerCells_"):
-		cellNum = int(filename[24:-4])
-		os.rename(filename, cellSize[cellNum%8] + " " + cellType[math.floor(cellNum/8)] + " Cell.png")
+	if filename.startswith("CancerCellsGreyedOut_"):
+		cellNum = int(filename[33:-4])
+		os.rename(filename, "Grey " + cellSize[cellNum] + " Cell.png")
