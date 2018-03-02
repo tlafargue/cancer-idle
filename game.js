@@ -33,6 +33,7 @@
 				if (spriteName === "Red Blood Cell") {
 					consumable = true;
 				}
+				
 				return {
 					name: spriteName,
 					x: pixel[0],
@@ -43,7 +44,7 @@
 					sprite: sprites[spriteName],
 					player: false,
 					scale: scale,
-					consumable: consumable
+					consumable: consumable,
 				};
 			}
 
@@ -238,10 +239,10 @@
 					if (evolveCells[i].player)
 						evolveCells[i].player = false;
 					if (evolveCells[i].x !== center[0]) {
-						evolveCells[i].dx = (center[0] - evolveCells[i].x)/evolvingFrameTime
+						evolveCells[i].dx = ((center[0] - 8 * evolveCells[i].scale) - evolveCells[i].x)/evolvingGroupFrameTime
 					}
 					if (evolveCells[i].y !== center[1]) {
-						evolveCells[i].dy = (center[1] - evolveCells[i].y)/evolvingFrameTime
+						evolveCells[i].dy = ((center[1] - 8 * evolveCells[i].scale) - evolveCells[i].y)/evolvingGroupFrameTime
 					}
 				}
 			}
@@ -255,13 +256,28 @@
 						}
 					}
 					if (evolveCells.length === 10) {
-						evolve(evolveCells);
+						enableEvolveButton();
+						evolvingCells = evolveCells;
 					}
 				}
 			}
 
+			function flash () {
+				ctx.beginPath ();
+				ctx.arc(getCanvasCenter()[0], getCanvasCenter()[1], flashRadius, 0, 2 * Math.PI, false);
+				ctx.lineWidth = 100;
+				ctx.strokeStyle = "#FFFFFF";
+				ctx.stroke();
+				flashRadius += 50;
+			}
+
+			function enableEvolveButton() {
+				$("#evolve").prop("disabled", false);
+			}
+
 			var cancerCells = [];
 			var bloodCells = [];
+			var evolvingCells = [];
 			var cellPrice = [10, 20, 30, 40, 50, 60, 70, 80 ,90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340, 350, 360];
 
 			addCancerCell("Minuscule Healthy Cell");
@@ -286,12 +302,16 @@
 			var maxBloodCellsPrice = 1;
 
 			var cancerCellsUnlocked = 1;
+			var possibleToEvolve = false;
 			var evolving = false;
-
+			var evolingCells = [];
 
 			var bloodCellFrameCount = 0;
 			var evolvingFrameCount = 0;
-			var evolvingFrameTime = 50;
+			var evolvingGroupFrameTime = 50;
+			var evolvingFlashFrameTime = 70;
+
+			var flashRadius = 0;
 
 			var money = 0;
 
@@ -371,18 +391,13 @@
 				buyCancerCell ($(this).val());
 			});
 
+			$("#evolve").click(function(cell) {
+				evolve(evolvingCells);
+			});
+
 			setInterval(function() {
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				canEvolve();
-
-				if (evolving) {
-					if (evolvingFrameCount < evolvingFrameTime)
-						evolvingFrameCount++;
-					else {
-						evolving = false;
-						evolvingFrameCount = 0;
-					}
-				}
+				var evolveCells = canEvolve();
 
 				if (bloodCells.length === 0) {
 					addBloodCell("red");
@@ -485,5 +500,19 @@
 					cell.y += cell.dy * roamingSpeed;
 					}
 				});
+				if (evolving) {
+					if (evolvingFrameCount < evolvingGroupFrameTime) {
+						evolvingFrameCount++;
+					} 
+					else if (evolvingFrameCount < evolvingFlashFrameTime){
+						flash ();
+						evolvingFrameCount++;
+					}
+					else {
+						evolving = false;
+						evolvingFrameCount = 0;
+						flashRadius = 0;
+					}
+				}
 			}, 100);
 		});
