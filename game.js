@@ -43,7 +43,8 @@
 					sprite: sprites[spriteName],
 					player: false,
 					scale: scale,
-					consumable: consumable
+					consumable: consumable,
+					evolving: false
 				};
 			}
 
@@ -221,6 +222,14 @@
 				$("#money").text("Money : " + shortenMoney(money));
 			}
 
+			function deleteCancerCell (cell) {
+				cancerCells.splice(cell, 1);
+			}
+
+			function deleteBloodCell (cell) {
+				bloodCells.splice(cell, 1);
+			}
+
 			function buyCancerCell (cellId) {
 				if (cellId <= cancerCellsUnlocked && money >= cellPrice[cellId - 1]) {
 					addCancerCell(getCellName(cellId));
@@ -247,15 +256,25 @@
 			}
 
 			function canEvolve() {
+				var evolveCells = [];
+
 				if (!evolving) {
-					var evolveCells = [];
 					for (var i = 0; i < cancerCells.length && evolveCells.length < 10; i++) {
 						if (getCellName(cancerCellsUnlocked) === cancerCells[i].name) {
 							evolveCells.push(cancerCells[i]);
+							cancerCells[i].evolving = true;
 						}
 					}
 					if (evolveCells.length === 10) {
 						evolve(evolveCells);
+					}
+				}
+			}
+
+			function finishedEvolve () {
+				for (var i = cancerCells.length - 1; i >= 0; i--) {
+					if (cancerCells[i].evolving) {
+						deleteCancerCell(i);
 					}
 				}
 			}
@@ -294,6 +313,8 @@
 			var evolvingFrameTime = 50;
 
 			var money = 0;
+
+			var evolveCellsPublic;
 
 			$("#game").click(function(e) {
 				if (!evolving) {
@@ -380,6 +401,7 @@
 						evolvingFrameCount++;
 					else {
 						evolving = false;
+						finishedEvolve ();
 						evolvingFrameCount = 0;
 					}
 				}
@@ -402,7 +424,7 @@
 				bloodCells.forEach(function(cell, i) {
 					cancerCells.forEach(function(cancercell) {
 						if(collideCell(cell, cancercell)) {
-							bloodCells.splice(i, 1);
+							deleteBloodCell (i);
 							money += bloodCellValue;
 							updateMoney ();
 							return;
